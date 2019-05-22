@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,7 +11,7 @@ import { GridModule } from '@progress/kendo-angular-grid';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ThfKendoModule } from '@totvs/thf-kendo';
 
 
@@ -19,6 +19,13 @@ import 'hammerjs';
 import { SchedulerModule } from '@progress/kendo-angular-scheduler';
 import { ThfModule } from '@totvs/thf-ui';
 import { RouterModule } from '@angular/router';
+import { ToolbarService } from '@progress/kendo-angular-scheduler';
+
+import '@progress/kendo-angular-intl/locales/pt/all';
+import { IntlModule } from '@progress/kendo-angular-intl';
+import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
+
+
 
 @NgModule({
   declarations: [
@@ -37,11 +44,17 @@ import { RouterModule } from '@angular/router';
     SchedulerModule,
     ThfModule,
     ThfKendoModule,
+    IntlModule,
+    ReactiveFormsModule,
     RouterModule.forRoot([]),
+    DateInputsModule,
 
 
   ],
-  providers: [],
+  providers: [
+    ToolbarService,
+    {provide: LOCALE_ID, useValue: 'pt-BR'}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

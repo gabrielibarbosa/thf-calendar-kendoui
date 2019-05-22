@@ -13461,7 +13461,7 @@ kendo-scheduler .k-event,
 
 .k-scheduler-monthview .k-scheduler-table td {
   height: 80px;
-  text-align: right; }
+  text-align: center; }
 
 .k-scheduler-monthview .k-hidden {
   padding-left: 0 !important;
