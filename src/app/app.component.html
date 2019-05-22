@@ -6,18 +6,12 @@
             style="height: 600px;">
             <ng-template kendoSchedulerToolbarTemplate let-selectedDate="selectedDate" let-views="views">
 
-                <!-- <ul kendoSchedulerToolbarNavigation></ul> -->
-                <!-- <thf-select name="select" class="thf-md-3" [(ngModel)]="selectToolbarNavigation"
-                [t-options]="[{label: 'Dia', value: '0'}, {label: 'Semana', value: '1'}, {label: 'Mês', value: '2'} ]">
-                </thf-select> -->
-                <div class="thf-md-3">
-                    <h2> {{ selectedDate | date }}</h2>
-
-                </div>
-                <thf-select name="select" class="thf-md-3" [(ngModel)]="selectedViewIndex"
+                <app-scheduler-navigation [selectedDate]="selectedDate">
+                </app-scheduler-navigation>        
+                <thf-select name="select" class="thf-md-2" [(ngModel)]="selectedViewIndex"
                     [t-options]="[{label: 'Dia', value: '0'}, {label: 'Semana', value: '1'}, {label: 'Mês', value: '2'} ]">
-                </thf-select>
-            </ng-template>
+                  </thf-select> 
+              </ng-template>
             <ng-template kendoSchedulerEditDialogTemplate let-formGroup="formGroup" let-isNew="isNew"
                 let-editMode="editMode">
                 <div class="k-form-inline">

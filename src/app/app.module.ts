@@ -3,12 +3,8 @@ import { NgModule, LOCALE_ID } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
-import { ButtonsModule } from '@progress/kendo-angular-buttons';
-import { ChartModule } from '@progress/kendo-angular-charts';
-import { GridModule } from '@progress/kendo-angular-grid';
-
-
+import { MyNavigationComponent } from './my-navigation.component';
+import { SchedulerNavigationComponent } from './scheduler-navigation/scheduler-navigation.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -29,18 +25,14 @@ import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SchedulerNavigationComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    ButtonsModule,
-    ChartModule,
-    GridModule,
-    CommonModule,
-    BrowserAnimationsModule,
-    BrowserModule,
     FormsModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
     SchedulerModule,
     ThfModule,
     ThfKendoModule,
@@ -48,8 +40,6 @@ import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
     ReactiveFormsModule,
     RouterModule.forRoot([]),
     DateInputsModule,
-
-
   ],
   providers: [
     ToolbarService,
