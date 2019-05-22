@@ -1,45 +1,34 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-
-import { ButtonsModule } from '@progress/kendo-angular-buttons';
-import { ChartModule } from '@progress/kendo-angular-charts';
-import { GridModule } from '@progress/kendo-angular-grid';
-
-
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { ThfKendoModule } from '@totvs/thf-kendo';
-
-
-import 'hammerjs';
+import { RouterModule } from '@angular/router';
 import { SchedulerModule } from '@progress/kendo-angular-scheduler';
 import { ThfModule } from '@totvs/thf-ui';
-import { RouterModule } from '@angular/router';
+import 'hammerjs';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { MyNavigationComponent } from './my-navigation.component';
+import { FormsModule } from '@angular/forms';
+import { SchedulerNavigationComponent } from './scheduler-navigation/scheduler-navigation.component';
+
+
+
+
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SchedulerNavigationComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    ButtonsModule,
-    ChartModule,
-    GridModule,
-    CommonModule,
-    BrowserAnimationsModule,
-    BrowserModule,
     FormsModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
     SchedulerModule,
     ThfModule,
-    ThfKendoModule,
     RouterModule.forRoot([]),
-
-
   ],
   providers: [],
   bootstrap: [AppComponent]
