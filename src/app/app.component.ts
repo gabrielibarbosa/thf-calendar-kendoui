@@ -8,9 +8,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreateFormGroupArgs } from '@progress/kendo-angular-grid';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   public formGroup: FormGroup;
@@ -24,9 +24,9 @@ export class AppComponent {
     start: new Date('2018-10-22T09:00:00'),
     end: new Date('2018-10-22T09:30:00'),
     recurrenceRule: 'FREQ=DAILY;COUNT=5;'
-}];
-  
- 
+  }];
+
+
 
   action(button) {
     alert(`${button.label}`);
@@ -45,39 +45,39 @@ export class AppComponent {
   onClick($event) {
     console.log($event);
   }
-  
+
   constructor(private formBuilder: FormBuilder) {
     this.createFormGroup = this.createFormGroup.bind(this);
-   }
+  }
 
-   public createFormGroup(args: CreateFormGroupArgs): FormGroup {
+  public createFormGroup(args: CreateFormGroupArgs): FormGroup {
     const dataItem = args.dataItem;
 
     this.formGroup = this.formBuilder.group({
-        'id': args.isNew ? this.getNextId() : dataItem.id,
-        'start': [dataItem.start, Validators.required],
-        'end': [dataItem.end, Validators.required],
-        'startTimezone': [dataItem.startTimezone],
-        'endTimezone': [dataItem.endTimezone],
-        'isAllDay': dataItem.isAllDay,
-        'title': dataItem.title,
-        'description': dataItem.description,
-        'recurrenceRule': dataItem.recurrenceRule,
-        'recurrenceId': dataItem.recurrenceId
+      'id': args.isNew ? this.getNextId() : dataItem.id,
+      'start': [dataItem.start, Validators.required],
+      'end': [dataItem.end, Validators.required],
+      'startTimezone': [dataItem.startTimezone],
+      'endTimezone': [dataItem.endTimezone],
+      'isAllDay': dataItem.isAllDay,
+      'title': dataItem.title,
+      'description': dataItem.description,
+      'recurrenceRule': dataItem.recurrenceRule,
+      'recurrenceId': dataItem.recurrenceId
     });
 
     return this.formGroup;
-}
+  }
 
-public isEditingSeries(editMode: EditMode): boolean {
-  return editMode === EditMode.Series;
-}
+  public isEditingSeries(editMode: EditMode): boolean {
+    return editMode === EditMode.Series;
+  }
 
-public getNextId(): number {
-  const len = this.events.length;
+  public getNextId(): number {
+    const len = this.events.length;
 
-  return (len === 0) ? 1 : this.events[this.events.length - 1].id + 1;
-}
+    return (len === 0) ? 1 : this.events[this.events.length - 1].id + 1;
+  }
 
   //  public selectedDate: Date = displayDate;
   //  public events: SchedulerEvent[] = sampleData;

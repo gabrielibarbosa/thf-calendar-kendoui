@@ -1,27 +1,26 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID } from '@angular/core';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
+import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
+import { IntlModule } from '@progress/kendo-angular-intl';
+import '@progress/kendo-angular-intl/locales/pt/all';
+import { SchedulerModule, ToolbarService } from '@progress/kendo-angular-scheduler';
+import { ThfKendoModule } from '@totvs/thf-kendo';
+import { ThfModule } from '@totvs/thf-ui';
+import 'hammerjs';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MyNavigationComponent } from './my-navigation.component';
 import { SchedulerNavigationComponent } from './scheduler-navigation/scheduler-navigation.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ThfKendoModule } from '@totvs/thf-kendo';
+import '@progress/kendo-angular-intl/locales/pt-PT/all';
+import localePTPT from '@angular/common/locales/pt-PT';
+import { registerLocaleData } from '@angular/common';
 
 
-import 'hammerjs';
-import { SchedulerModule } from '@progress/kendo-angular-scheduler';
-import { ThfModule } from '@totvs/thf-ui';
-import { RouterModule } from '@angular/router';
-import { ToolbarService } from '@progress/kendo-angular-scheduler';
-
-import '@progress/kendo-angular-intl/locales/pt/all';
-import { IntlModule } from '@progress/kendo-angular-intl';
-import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 
 
+registerLocaleData(localePTPT);
 
 @NgModule({
   declarations: [
@@ -42,8 +41,8 @@ import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
     DateInputsModule,
   ],
   providers: [
-    ToolbarService,
-    {provide: LOCALE_ID, useValue: 'pt-BR'}
+    ToolbarService, 
+    {provide: LOCALE_ID, useValue: 'pt-PT'}
   ],
   bootstrap: [AppComponent]
 })
