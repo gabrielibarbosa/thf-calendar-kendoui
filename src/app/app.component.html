@@ -8,7 +8,7 @@ t-label="Buy fruits salad"
 
 
 <!-- Modal para adicionar um novo evento -->
-        <thf-button t-label="Novo" (t-click)="modal.open()">
+        <thf-button t-label="Novo" (t-click)="add()">
         </thf-button>
         <thf-modal #modal t-title="Options" [t-primary-action]="confirm" [t-secondary-action]="close">
 
@@ -49,12 +49,8 @@ t-label="Buy fruits salad"
 
             <kendo-scheduler-day-view>
             </kendo-scheduler-day-view>
-            <!-- <kendo-scheduler-multi-day-view [numberOfDays]="3">
-            </kendo-scheduler-multi-day-view> -->
             <kendo-scheduler-week-view>
             </kendo-scheduler-week-view>
-            <!-- <kendo-scheduler-work-week-view>
-            </kendo-scheduler-work-week-view> -->
             <kendo-scheduler-month-view [eventHeight]="30">
             </kendo-scheduler-month-view>
         </kendo-scheduler>

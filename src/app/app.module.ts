@@ -11,7 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import '@progress/kendo-angular-intl/locales/pt-PT/all';
 import '@progress/kendo-angular-intl/locales/pt/all';
-import {  SchedulerModule, ToolbarService } from '@progress/kendo-angular-scheduler';
+import {  SchedulerModule, ToolbarService, EditService } from '@progress/kendo-angular-scheduler';
 import { ThfKendoModule } from '@totvs/thf-kendo';
 import { ThfModule } from '@totvs/thf-ui';
 import 'hammerjs';
@@ -46,6 +46,7 @@ registerLocaleData(localePTPT);
   ],
   providers: [
     ToolbarService,
+    EditService,
     {provide: LOCALE_ID, useValue: 'pt-PT'}
   ],
   bootstrap: [AppComponent]

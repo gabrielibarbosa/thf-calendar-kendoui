@@ -1,10 +1,8 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { ThfMenuItem, ThfPageAction} from '@totvs/thf-ui';
+import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
+import { EditMode, RemoveEvent, SchedulerEvent, CreateFormGroupArgs } from '@progress/kendo-angular-scheduler';
 import '@progress/kendo-date-math/tz/Brazil/East';
-import { ThfModalAction, ThfModalComponent } from '@totvs/thf-ui/components/thf-modal';
-
-import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
-import { EditMode, SchedulerEvent } from '@progress/kendo-angular-scheduler';
+import { ThfMenuItem, ThfPageAction, ThfModalComponent } from '@totvs/thf-ui';
 
 @Component({
   selector: 'app-root',
@@ -46,25 +44,18 @@ export class AppComponent {
     { label: 'Novo', action: this.add, icon: 'thf-icon-plus' }
   ];
 
-  primaryAction: ThfModalAction = {
-    action: () => {
-      this.thfModal.close();
-    },
-    label: 'Confirm'
-  };
-  secondaryAction: ThfModalAction = {
-    action: () => {
-      this.thfModal.close();
-    },
-    label: 'Cancel'
-  };
+  // public editedEvent: any;
+  // public editMode: EditMode;
+  // public isNew: boolean;
 
-  // openModal(){
-  //   this.thfModal.open();
+  // action(button) {
+  //   alert(`${button.label}`);
   // }
+
+
   add() {
     this.events = [...this.events, {
-      id: 5,
+      id: this.getNextId(),
       title: 'Take the dog to the vet',
       description: '', 
       startTimezone: null,
@@ -81,11 +72,33 @@ export class AppComponent {
   }
 
   constructor(private formBuilder: FormBuilder) {
+    this.createFormGroup = this.createFormGroup.bind(this);
   }
 
   public ngOnInit(): void {
     // this.editService.read();
   }
+
+  public createFormGroup(args: CreateFormGroupArgs): FormGroup {
+    const dataItem = args.dataItem;
+
+    this.formGroup = this.formBuilder.group({
+      'id': args.isNew ? this.getNextId() : dataItem.id,
+      'start': [dataItem.start, Validators.required],
+      'end': [dataItem.end, Validators.required],
+      'startTimezone': [dataItem.startTimezone],
+      'endTimezone': [dataItem.endTimezone],
+      'isAllDay': dataItem.isAllDay,
+      'title': dataItem.title,
+      'description': dataItem.description,
+      'recurrenceRule': dataItem.recurrenceRule,
+      'recurrenceId': dataItem.recurrenceId
+    });
+
+    return this.formGroup;
+  }
+
+
 
   //    public createFormGroup(args: CreateFormGroupArgs): FormGroup {
   //     const dataItem = args.dataItem;
@@ -110,12 +123,16 @@ export class AppComponent {
   //   return editMode === EditMode.Series;
   // }
 
-  // public getNextId(): number {
-  //   const len = this.events.length;
+  public getNextId(): number {
+    const len = this.events.length;
 
-  //   return (len === 0) ? 1 : this.events[this.events.length - 1].id + 1;
-  // }
+    return (len === 0) ? 1 : this.events[this.events.length - 1].id + 1;
+  }
 
-  //  public selectedDate: Date = displayDate;
-  //  public events: SchedulerEvent[] = sampleData;
+  removeHandler(removeEvent: RemoveEvent) {
+    removeEvent.preventDefault();
+    this.events = this.events.filter(event => {
+      return event.id !== removeEvent.event.id;
+    });
+  }
 }
