@@ -1,14 +1,9 @@
 <div class="thf-wrapper">
     <thf-menu [t-menus]="menus"></thf-menu>
     <thf-page-default t-title="Painel de Agendamento" >
-        <!-- <thf-button
-t-label="Buy fruits salad"
-(t-click)="openModal()">
-</thf-button> -->
-
 
 <!-- Modal para adicionar um novo evento -->
-        <thf-button t-label="Novo" (t-click)="add()">
+        <thf-button t-label="Novo" (t-click)="modal.open()">
         </thf-button>
         <thf-modal #modal t-title="Options" [t-primary-action]="confirm" [t-secondary-action]="close">
 

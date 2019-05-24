@@ -44,15 +44,6 @@ export class AppComponent {
     { label: 'Novo', action: this.add, icon: 'thf-icon-plus' }
   ];
 
-  // public editedEvent: any;
-  // public editMode: EditMode;
-  // public isNew: boolean;
-
-  // action(button) {
-  //   alert(`${button.label}`);
-  // }
-
-
   add() {
     this.events = [...this.events, {
       id: this.getNextId(),
@@ -72,57 +63,12 @@ export class AppComponent {
   }
 
   constructor(private formBuilder: FormBuilder) {
-    this.createFormGroup = this.createFormGroup.bind(this);
   }
 
   public ngOnInit(): void {
-    // this.editService.read();
   }
 
-  public createFormGroup(args: CreateFormGroupArgs): FormGroup {
-    const dataItem = args.dataItem;
-
-    this.formGroup = this.formBuilder.group({
-      'id': args.isNew ? this.getNextId() : dataItem.id,
-      'start': [dataItem.start, Validators.required],
-      'end': [dataItem.end, Validators.required],
-      'startTimezone': [dataItem.startTimezone],
-      'endTimezone': [dataItem.endTimezone],
-      'isAllDay': dataItem.isAllDay,
-      'title': dataItem.title,
-      'description': dataItem.description,
-      'recurrenceRule': dataItem.recurrenceRule,
-      'recurrenceId': dataItem.recurrenceId
-    });
-
-    return this.formGroup;
-  }
-
-
-
-  //    public createFormGroup(args: CreateFormGroupArgs): FormGroup {
-  //     const dataItem = args.dataItem;
-
-  //     this.formGroup = this.formBuilder.group({
-  //         'id': args.isNew ? this.getNextId() : dataItem.id,
-  //         'start': [dataItem.start, Validators.required],
-  //         'end': [dataItem.end, Validators.required],
-  //         'startTimezone': [dataItem.startTimezone],
-  //         'endTimezone': [dataItem.endTimezone],
-  //         'isAllDay': dataItem.isAllDay,
-  //         'title': dataItem.title,
-  //         'description': dataItem.description,
-  //         'recurrenceRule': dataItem.recurrenceRule,
-  //         'recurrenceId': dataItem.recurrenceId
-  //     });
-
-  //     return this.formGroup;
-  // }
-
-  // public isEditingSeries(editMode: EditMode): boolean {
-  //   return editMode === EditMode.Series;
-  // }
-
+ 
   public getNextId(): number {
     const len = this.events.length;
 
