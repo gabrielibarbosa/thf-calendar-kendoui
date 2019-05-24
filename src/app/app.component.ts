@@ -1,11 +1,8 @@
 import { Component, Input } from '@angular/core';
-// import { SchedulerEvent } from '@progress/kendo-angular-scheduler';
-// import { sampleData, displayDate } from './events-utc';
-import { ThfMenuItem, ThfPageAction, ThfButtonGroupItem, ThfDialogService } from '@totvs/thf-ui';
-import '@progress/kendo-date-math/tz/Brazil/East';
-import { ToolbarService, EditMode, SchedulerEvent, RemoveEvent } from '@progress/kendo-angular-scheduler';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CreateFormGroupArgs } from '@progress/kendo-angular-grid';
+import { EditMode, RemoveEvent, SchedulerEvent, CreateFormGroupArgs } from '@progress/kendo-angular-scheduler';
+import '@progress/kendo-date-math/tz/Brazil/East';
+import { ThfMenuItem, ThfPageAction } from '@totvs/thf-ui';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +23,7 @@ export class AppComponent {
     recurrenceRule: 'FREQ=DAILY;COUNT=5;'
   }];
 
+
   public selectedViewIndex = 2;
 
   readonly menus: Array<ThfMenuItem> = [
@@ -36,10 +34,14 @@ export class AppComponent {
     { label: 'Novo', action: this.add, icon: 'thf-icon-plus' }
   ];
 
-  constructor(private formBuilder: FormBuilder,
-    private dialog: ThfDialogService) {
-    this.createFormGroup = this.createFormGroup.bind(this);
+  public editedEvent: any;
+  public editMode: EditMode;
+  public isNew: boolean;
+
+  action(button) {
+    alert(`${button.label}`);
   }
+
 
   add() {
     this.events = [...this.events, {
@@ -59,28 +61,57 @@ export class AppComponent {
     console.log($event);
   }
 
+  constructor(private formBuilder: FormBuilder) {
+    this.createFormGroup = this.createFormGroup.bind(this);
+  }
+
+  public ngOnInit(): void {
+    // this.editService.read();
+  }
+
   public createFormGroup(args: CreateFormGroupArgs): FormGroup {
     const dataItem = args.dataItem;
 
     this.formGroup = this.formBuilder.group({
-      id: args.isNew ? this.getNextId() : dataItem.id,
-      start: [dataItem.start, Validators.required],
-      end: [dataItem.end, Validators.required],
-      startTimezone: [dataItem.startTimezone],
-      endTimezone: [dataItem.endTimezone],
-      isAllDay: dataItem.isAllDay,
-      title: dataItem.title,
-      description: dataItem.description,
-      recurrenceRule: dataItem.recurrenceRule,
-      recurrenceId: dataItem.recurrenceId
+      'id': args.isNew ? this.getNextId() : dataItem.id,
+      'start': [dataItem.start, Validators.required],
+      'end': [dataItem.end, Validators.required],
+      'startTimezone': [dataItem.startTimezone],
+      'endTimezone': [dataItem.endTimezone],
+      'isAllDay': dataItem.isAllDay,
+      'title': dataItem.title,
+      'description': dataItem.description,
+      'recurrenceRule': dataItem.recurrenceRule,
+      'recurrenceId': dataItem.recurrenceId
     });
 
     return this.formGroup;
   }
 
-  public isEditingSeries(editMode: EditMode): boolean {
-    return editMode === EditMode.Series;
-  }
+
+
+  //    public createFormGroup(args: CreateFormGroupArgs): FormGroup {
+  //     const dataItem = args.dataItem;
+
+  //     this.formGroup = this.formBuilder.group({
+  //         'id': args.isNew ? this.getNextId() : dataItem.id,
+  //         'start': [dataItem.start, Validators.required],
+  //         'end': [dataItem.end, Validators.required],
+  //         'startTimezone': [dataItem.startTimezone],
+  //         'endTimezone': [dataItem.endTimezone],
+  //         'isAllDay': dataItem.isAllDay,
+  //         'title': dataItem.title,
+  //         'description': dataItem.description,
+  //         'recurrenceRule': dataItem.recurrenceRule,
+  //         'recurrenceId': dataItem.recurrenceId
+  //     });
+
+  //     return this.formGroup;
+  // }
+
+  // public isEditingSeries(editMode: EditMode): boolean {
+  //   return editMode === EditMode.Series;
+  // }
 
   public getNextId(): number {
     const len = this.events.length;

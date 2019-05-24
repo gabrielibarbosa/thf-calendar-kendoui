@@ -3,20 +3,23 @@ import localePTPT from '@angular/common/locales/pt-PT';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule } from '@angular/router';
-import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
-import { IntlModule } from '@progress/kendo-angular-intl';
-import '@progress/kendo-angular-intl/locales/pt-PT/all';
-import '@progress/kendo-angular-intl/locales/pt/all';
-import { EditService, SchedulerModule } from '@progress/kendo-angular-scheduler';
-import { ThfKendoModule } from '@totvs/thf-kendo';
-import { ThfModule } from '@totvs/thf-ui';
-import 'hammerjs';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SchedulerNavigationComponent } from './scheduler-navigation/scheduler-navigation.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
+import '@progress/kendo-angular-intl/locales/pt-PT/all';
+import '@progress/kendo-angular-intl/locales/pt/all';
+import {  SchedulerModule, ToolbarService, EditService } from '@progress/kendo-angular-scheduler';
+import { ThfKendoModule } from '@totvs/thf-kendo';
+import { ThfModule } from '@totvs/thf-ui';
+import 'hammerjs';
 
+import '@progress/kendo-angular-intl/locales/pt/all';
+import { IntlModule } from '@progress/kendo-angular-intl';
+import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
+import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 
 
 registerLocaleData(localePTPT);
@@ -24,7 +27,7 @@ registerLocaleData(localePTPT);
 @NgModule({
   declarations: [
     AppComponent,
-    SchedulerNavigationComponent
+    SchedulerNavigationComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,12 +39,15 @@ registerLocaleData(localePTPT);
     ThfKendoModule,
     IntlModule,
     ReactiveFormsModule,
+    HttpClientModule,
+    HttpClientJsonpModule,
     RouterModule.forRoot([]),
     DateInputsModule,
   ],
   providers: [
+    ToolbarService,
     EditService,
-    { provide: LOCALE_ID, useValue: 'pt-PT' }
+    {provide: LOCALE_ID, useValue: 'pt-PT'}
   ],
   bootstrap: [AppComponent]
 })

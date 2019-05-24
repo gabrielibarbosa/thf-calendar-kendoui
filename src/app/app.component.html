@@ -1,60 +1,25 @@
 <div class="thf-wrapper">
     <thf-menu [t-menus]="menus"></thf-menu>
     <thf-page-default t-title="Painel de Agendamento" [t-actions]="actions">
-        <kendo-scheduler [kendoSchedulerReactiveEditing]="createFormGroup" [kendoSchedulerBinding]="events"
-            [selectedDate]="selectedDate" startTime="07:00" endTime="19:00" [(selectedViewIndex)]="selectedViewIndex"
-            style="height: 600px;"
-            (remove)="removeHandler($event)">
+        <kendo-scheduler [kendoSchedulerBinding]="events" [selectedDate]="selectedDate" startTime="07:00"
+            endTime="19:00" [(selectedViewIndex)]="selectedViewIndex" style="height: 600px;"
+            [kendoSchedulerReactiveEditing]="createFormGroup"
+            (remove)="removeHandler($event)"
+            >
             <ng-template kendoSchedulerToolbarTemplate let-selectedDate="selectedDate" let-views="views">
-
-                <app-scheduler-navigation [selectedDate]="selectedDate">
-                </app-scheduler-navigation>        
-                <thf-select name="select"  [(ngModel)]="selectedViewIndex"
-                    [t-options]="[{label: 'Dia', value: '0'}, {label: 'Semana', value: '1'}, {label: 'Mês', value: '2'} ]">
-                  </thf-select> 
-              </ng-template>
-            <ng-template kendoSchedulerEditDialogTemplate let-formGroup="formGroup" let-isNew="isNew"
-                let-editMode="editMode">
-                <div class="k-form-inline">
-                    <div class="k-form-field">
-                        <span>Title</span>
-                        <input class="k-textbox" placeholder="Title" [formControl]="formGroup.get('title')" />
-                    </div>
-                    <div class="k-form-field k-datetime-picker-wrapper">
-                        <span>Start</span>
-                        <kendo-datepicker [formControl]="formGroup.get('start')">
-                        </kendo-datepicker>
-                        <kendo-timepicker [formControl]="formGroup.get('start')"
-                            *ngIf='!formGroup.controls.isAllDay.value'>
-                        </kendo-timepicker>
-                    </div>
-                    <div class="k-form-field k-datetime-picker-wrapper">
-                        <span>End</span>
-                        <kendo-datepicker [formControl]="formGroup.get('end')">
-                        </kendo-datepicker>
-                        <kendo-timepicker [formControl]="formGroup.get('end')"
-                            *ngIf='!formGroup.controls.isAllDay.value'>
-                        </kendo-timepicker>
-                    </div>
-                    <div class="k-form-field">
-                        <input type='checkbox' id='k-is-allday-chkbox' class='k-checkbox'
-                            [formControl]="formGroup.get('isAllDay')" />
-                        <label class='k-checkbox-label' for='k-is-allday-chkbox'>All Day Event</label>
-                    </div>
-                    <div class="k-form-field" *ngIf="isEditingSeries(editMode)">
-                        <kendo-recurrence-editor [formControl]="formGroup.get('recurrenceRule')">
-                        </kendo-recurrence-editor>
-                    </div>
+                <div class="thf-md-4">
+                    <app-scheduler-navigation [selectedDate]="selectedDate">
+                    </app-scheduler-navigation>
                 </div>
+                <thf-select name="select" class="thf-md-3" [(ngModel)]="selectedViewIndex"
+                    [t-options]="[{label: 'Dia', value: '0'}, {label: 'Semana', value: '1'}, {label: 'Mês', value: '2'} ]">
+                </thf-select>
             </ng-template>
+
             <kendo-scheduler-day-view>
             </kendo-scheduler-day-view>
-            <!-- <kendo-scheduler-multi-day-view [numberOfDays]="3">
-            </kendo-scheduler-multi-day-view> -->
             <kendo-scheduler-week-view>
             </kendo-scheduler-week-view>
-            <!-- <kendo-scheduler-work-week-view>
-            </kendo-scheduler-work-week-view> -->
             <kendo-scheduler-month-view [eventHeight]="30">
             </kendo-scheduler-month-view>
         </kendo-scheduler>
