@@ -34,8 +34,14 @@ t-label="Buy fruits salad"
 
         </thf-modal>
 
-        <kendo-scheduler [kendoSchedulerBinding]="events" [selectedDate]="selectedDate" startTime="07:00"
-            endTime="19:00" style="height: 400px" [(selectedViewIndex)]="selectedViewIndex" style="height: 600px;">
+        <kendo-scheduler 
+                [kendoSchedulerBinding]="events" 
+                [selectedDate]="selectedDate" 
+                [kendoSchedulerReactiveEditing]="createFormGroup"
+                startTime="07:00"
+                endTime="19:00" 
+                [(selectedViewIndex)]="selectedViewIndex" style="height: 600px;"
+                (remove)="removeHandler($event)">
 
             <ng-template kendoSchedulerToolbarTemplate let-selectedDate="selectedDate" let-views="views">
                 <div class="thf-md-4">

@@ -11,26 +11,27 @@ import { ThfMenuItem, ThfPageAction, ThfModalComponent } from '@totvs/thf-ui';
 })
 
 export class AppComponent {
+
+  constructor(private formBuilder: FormBuilder) {
+    this.createFormGroup = this.createFormGroup.bind(this);
+  }
   public formGroup: FormGroup;
 
   title = 'thf-calendar-kendoui';
   @Input()
-  public selectedDate: Date = new Date('2019-05-23T00:00:00');
-  public events: SchedulerEvent[] = [{
+  public selectedDate: Date = new Date();
+  public events: SchedulerEvent[] = [
+    {
     id: 1,
     title: 'Breakfast',
-    start: new Date('2018-10-22T09:00:00'),
-    end: new Date('2018-10-22T09:30:00'),
-    recurrenceRule: 'FREQ=DAILY;COUNT=5;'
-  }];
+    start: new Date(),
+    end: new Date()
+  }
+];
 
   public editedEvent: any;
   public editMode: EditMode;
   public isNew: boolean;
-
-  action(button) {
-    alert(`${button.label}`);
-  }
   @ViewChild(ThfModalComponent) thfModal: ThfModalComponent;
   @ViewChild('optionsForm') form: NgForm;
 
@@ -43,6 +44,10 @@ export class AppComponent {
   public readonly actions: Array<ThfPageAction> = [
     { label: 'Novo', action: this.add, icon: 'thf-icon-plus' }
   ];
+
+  action(button) {
+    alert(`${button.label}`);
+  }
 
   // public editedEvent: any;
   // public editMode: EditMode;
@@ -57,7 +62,7 @@ export class AppComponent {
     this.events = [...this.events, {
       id: this.getNextId(),
       title: 'Take the dog to the vet',
-      description: '', 
+      description: '',
       startTimezone: null,
       start: new Date(),
       end: new Date(),
@@ -71,10 +76,6 @@ export class AppComponent {
     console.log($event);
   }
 
-  constructor(private formBuilder: FormBuilder) {
-    this.createFormGroup = this.createFormGroup.bind(this);
-  }
-
   public ngOnInit(): void {
     // this.editService.read();
   }
@@ -83,45 +84,20 @@ export class AppComponent {
     const dataItem = args.dataItem;
 
     this.formGroup = this.formBuilder.group({
-      'id': args.isNew ? this.getNextId() : dataItem.id,
-      'start': [dataItem.start, Validators.required],
-      'end': [dataItem.end, Validators.required],
-      'startTimezone': [dataItem.startTimezone],
-      'endTimezone': [dataItem.endTimezone],
-      'isAllDay': dataItem.isAllDay,
-      'title': dataItem.title,
-      'description': dataItem.description,
-      'recurrenceRule': dataItem.recurrenceRule,
-      'recurrenceId': dataItem.recurrenceId
+      id: args.isNew ? this.getNextId() : dataItem.id,
+      start: [dataItem.start, Validators.required],
+      end: [dataItem.end, Validators.required],
+      startTimezone: [dataItem.startTimezone],
+      endTimezone: [dataItem.endTimezone],
+      isAllDay: dataItem.isAllDay,
+      title: dataItem.title,
+      description: dataItem.description,
+      recurrenceRule: dataItem.recurrenceRule,
+      recurrenceId: dataItem.recurrenceId
     });
 
     return this.formGroup;
   }
-
-
-
-  //    public createFormGroup(args: CreateFormGroupArgs): FormGroup {
-  //     const dataItem = args.dataItem;
-
-  //     this.formGroup = this.formBuilder.group({
-  //         'id': args.isNew ? this.getNextId() : dataItem.id,
-  //         'start': [dataItem.start, Validators.required],
-  //         'end': [dataItem.end, Validators.required],
-  //         'startTimezone': [dataItem.startTimezone],
-  //         'endTimezone': [dataItem.endTimezone],
-  //         'isAllDay': dataItem.isAllDay,
-  //         'title': dataItem.title,
-  //         'description': dataItem.description,
-  //         'recurrenceRule': dataItem.recurrenceRule,
-  //         'recurrenceId': dataItem.recurrenceId
-  //     });
-
-  //     return this.formGroup;
-  // }
-
-  // public isEditingSeries(editMode: EditMode): boolean {
-  //   return editMode === EditMode.Series;
-  // }
 
   public getNextId(): number {
     const len = this.events.length;
@@ -130,6 +106,7 @@ export class AppComponent {
   }
 
   removeHandler(removeEvent: RemoveEvent) {
+    alert("OPA");
     removeEvent.preventDefault();
     this.events = this.events.filter(event => {
       return event.id !== removeEvent.event.id;
