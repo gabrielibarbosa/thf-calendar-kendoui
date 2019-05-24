@@ -1,7 +1,12 @@
-<span (click)="prev()" class="thf-icon thf-icon-arrow-left"></span>
-<span>{{ selectedDate | date:'MMMM yyyy' }}</span>
-<span (click)="next()" class="thf-icon thf-icon-arrow-right"></span>
 
-<span class="day-of-week">{{ selectedDate | date:'dd' }}</span>
-<span>{{ selectedDate | date:'EEEE' }}</span>
-
+  <div class="scheduler-navigation-container">
+    <span  (click)="prev()"
+      class="thf-icon thf-icon-arrow-left arrow-left"></span>
+    <span class="month-and-year">{{ selectedDate | date:'MMMM yyyy' }}</span>
+    <span (click)="next()"
+      class="thf-icon thf-icon-arrow-right arrow-right"></span>
+  </div>
+  <div class="scheduler-day-and-week">
+    <span class="scheduler-day">{{ selectedDate | date:'dd' }}</span> 
+    <span class="scheduler-weekday">{{ selectedDate | date:'E' }}</span>
+  </div>

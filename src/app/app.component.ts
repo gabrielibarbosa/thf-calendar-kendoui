@@ -3,7 +3,6 @@ import { ThfMenuItem, ThfPageAction, ThfButtonGroupItem } from '@totvs/thf-ui';
 import '@progress/kendo-date-math/tz/Brazil/East';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { filter } from 'rxjs/operators';
-import { EditService } from './edit.service';
 import { EditMode, SlotClickEvent, EventClickEvent, CrudOperation, RemoveEvent, SchedulerEvent } from '@progress/kendo-angular-scheduler';
 
 @Component({
@@ -40,111 +39,36 @@ export class AppComponent {
   ];
 
   public readonly actions: Array<ThfPageAction> = [
-    { label: 'Novo' /*, action: this.add*/, icon: 'thf-icon-plus' }
+    { label: 'Novo', action: this.add, icon: 'thf-icon-plus' }
   ];
+
+  // constructor(private formBuilder: FormBuilder) {
+  //   this.createFormGroup = this.createFormGroup.bind(this);
+  // }
+
+  add() {
+    this.events = [...this.events, {
+      id: 5,
+      title: 'Take the dog to the vet',
+      description: '',
+      startTimezone: null,
+      start: new Date(),
+      end: new Date(),
+      endTimezone: null,
+      recurrenceRule: null,
+      isAllDay: false
+    }];
+  }
 
   onClick($event) {
     console.log($event);
   }
 
-  constructor(private formBuilder: FormBuilder, public editService: EditService) {
+  constructor(private formBuilder: FormBuilder) {
   }
 
   public ngOnInit(): void {
-    this.editService.read();
-  }
-
-  public slotDblClickHandler({ start, end, isAllDay }: SlotClickEvent): void {
-    this.isNew = true;
-
-    this.editMode = EditMode.Series;
-
-    this.editedEvent = {
-      Start: start,
-      End: end,
-      IsAllDay: isAllDay
-    };
-  }
-
-  public eventDblClickHandler({ sender, event }: EventClickEvent): void {
-    this.isNew = false;
-
-    let dataItem = event.dataItem;
-
-    if (this.editService.isRecurring(dataItem)) {
-      sender.openRecurringConfirmationDialog(CrudOperation.Edit)
-        // The dialog will emit `undefined` on cancel
-        .pipe(filter(editMode => editMode !== undefined))
-        .subscribe((editMode: EditMode) => {
-          if (editMode === EditMode.Series) {
-            dataItem = this.editService.findRecurrenceMaster(dataItem);
-          }
-
-          this.editMode = editMode;
-          this.editedEvent = dataItem;
-        });
-    } else {
-      this.editMode = EditMode.Series;
-      this.editedEvent = dataItem;
-    }
-  }
-
-  public saveHandler(formValue: any): void {
-    if (this.isNew) {
-      this.editService.create(formValue);
-    } else {
-      this.handleUpdate(this.editedEvent, formValue, this.editMode);
-    }
-  }
-
-  public removeHandler({ sender, dataItem }: RemoveEvent): void {
-    if (this.editService.isRecurring(dataItem)) {
-      sender.openRecurringConfirmationDialog(CrudOperation.Remove)
-        // result will be undefined if the Dialog was closed
-        .pipe(filter(editMode => editMode !== undefined))
-        .subscribe((editMode) => {
-          this.handleRemove(dataItem, editMode);
-        });
-    } else {
-      sender.openRemoveConfirmationDialog().subscribe((shouldRemove) => {
-        if (shouldRemove) {
-          this.editService.remove(dataItem);
-        }
-      });
-    }
-  }
-
-  public cancelHandler(): void {
-    this.editedEvent = undefined;
-  }
-
-  private handleUpdate(item: any, value: any, mode: EditMode): void {
-    const service = this.editService;
-    if (mode === EditMode.Occurrence) {
-      if (service.isException(item)) {
-        service.update(item, value);
-      } else {
-        service.createException(item, value);
-      }
-    } else {
-      // Item is not recurring or we're editing the entire series
-      service.update(item, value);
-    }
-  }
-
-  private handleRemove(item: any, mode: EditMode): void {
-    const service = this.editService;
-    if (mode === EditMode.Series) {
-      service.removeSeries(item);
-    } else if (mode === EditMode.Occurrence) {
-      if (service.isException(item)) {
-        service.remove(item);
-      } else {
-        service.removeOccurrence(item);
-      }
-    } else {
-      service.remove(item);
-    }
+    // this.editService.read();
   }
 
   //    public createFormGroup(args: CreateFormGroupArgs): FormGroup {
