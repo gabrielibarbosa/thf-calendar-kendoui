@@ -1,15 +1,17 @@
-import { Component, Input } from '@angular/core';
-import { ThfMenuItem, ThfPageAction, ThfButtonGroupItem } from '@totvs/thf-ui';
+import { Component, Input, ViewChild } from '@angular/core';
+import { ThfMenuItem, ThfPageAction} from '@totvs/thf-ui';
 import '@progress/kendo-date-math/tz/Brazil/East';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { filter } from 'rxjs/operators';
-import { EditMode, SlotClickEvent, EventClickEvent, CrudOperation, RemoveEvent, SchedulerEvent } from '@progress/kendo-angular-scheduler';
+import { ThfModalAction, ThfModalComponent } from '@totvs/thf-ui/components/thf-modal';
+
+import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
+import { EditMode, SchedulerEvent } from '@progress/kendo-angular-scheduler';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+
 export class AppComponent {
   public formGroup: FormGroup;
 
@@ -31,6 +33,8 @@ export class AppComponent {
   action(button) {
     alert(`${button.label}`);
   }
+  @ViewChild(ThfModalComponent) thfModal: ThfModalComponent;
+  @ViewChild('optionsForm') form: NgForm;
 
   public selectedViewIndex = 2;
 
@@ -42,15 +46,27 @@ export class AppComponent {
     { label: 'Novo', action: this.add, icon: 'thf-icon-plus' }
   ];
 
-  // constructor(private formBuilder: FormBuilder) {
-  //   this.createFormGroup = this.createFormGroup.bind(this);
-  // }
+  primaryAction: ThfModalAction = {
+    action: () => {
+      this.thfModal.close();
+    },
+    label: 'Confirm'
+  };
+  secondaryAction: ThfModalAction = {
+    action: () => {
+      this.thfModal.close();
+    },
+    label: 'Cancel'
+  };
 
+  // openModal(){
+  //   this.thfModal.open();
+  // }
   add() {
     this.events = [...this.events, {
       id: 5,
       title: 'Take the dog to the vet',
-      description: '',
+      description: '', 
       startTimezone: null,
       start: new Date(),
       end: new Date(),

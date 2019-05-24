@@ -1,21 +1,52 @@
 <div class="thf-wrapper">
     <thf-menu [t-menus]="menus"></thf-menu>
-    <thf-page-default t-title="Painel de Agendamento" [t-actions]="actions">
-        <kendo-scheduler [kendoSchedulerBinding]="events"
-            [selectedDate]="selectedDate" startTime="07:00" endTime="19:00" 
-            style="height: 400px"
-            [(selectedViewIndex)]="selectedViewIndex"
-            style="height: 600px;">
+    <thf-page-default t-title="Painel de Agendamento" >
+        <!-- <thf-button
+t-label="Buy fruits salad"
+(t-click)="openModal()">
+</thf-button> -->
+
+
+<!-- Modal para adicionar um novo evento -->
+        <thf-button t-label="Novo" (t-click)="modal.open()">
+        </thf-button>
+        <thf-modal #modal t-title="Options" [t-primary-action]="confirm" [t-secondary-action]="close">
+
+            <form #optionsForm="ngForm">
+                <div class="thf-row">
+                    <thf-input class="thf-md-12" name="titulo" t-label="Título" [(ngModel)]="titulo">
+                    </thf-input>
+                </div>
+                <div class="thf-row">
+                    <thf-checkbox-group name="diaInteiro" [(ngModel)]="diaInteiro"
+                        t-label="Dia Inteiro:" t-required [t-options]="diaInteiroOptions">
+                    </thf-checkbox-group>
+                </div>
+                <div class="thf-row">
+                    <thf-datepicker class="thf-md-12" name="start" t-label="Início">
+                    </thf-datepicker>
+                </div>
+                <div class="thf-row">
+                    <thf-datepicker class="thf-md-12" name="end" t-label="Fim">
+                    </thf-datepicker>
+                </div>
+            </form>
+
+        </thf-modal>
+
+        <kendo-scheduler [kendoSchedulerBinding]="events" [selectedDate]="selectedDate" startTime="07:00"
+            endTime="19:00" style="height: 400px" [(selectedViewIndex)]="selectedViewIndex" style="height: 600px;">
+
             <ng-template kendoSchedulerToolbarTemplate let-selectedDate="selectedDate" let-views="views">
-                <div class="thf-md-4" >
+                <div class="thf-md-4">
                     <app-scheduler-navigation [selectedDate]="selectedDate">
-                    </app-scheduler-navigation>  
+                    </app-scheduler-navigation>
                 </div>
                 <thf-select name="select" class="thf-md-3" [(ngModel)]="selectedViewIndex"
                     [t-options]="[{label: 'Dia', value: '0'}, {label: 'Semana', value: '1'}, {label: 'Mês', value: '2'} ]">
-                  </thf-select> 
-              </ng-template>
-        
+                </thf-select>
+            </ng-template>
+
             <kendo-scheduler-day-view>
             </kendo-scheduler-day-view>
             <!-- <kendo-scheduler-multi-day-view [numberOfDays]="3">
