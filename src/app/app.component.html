@@ -3,7 +3,8 @@
     <thf-page-default t-title="Painel de Agendamento" [t-actions]="actions">
         <kendo-scheduler [kendoSchedulerReactiveEditing]="createFormGroup" [kendoSchedulerBinding]="events"
             [selectedDate]="selectedDate" startTime="07:00" endTime="19:00" [(selectedViewIndex)]="selectedViewIndex"
-            style="height: 600px;">
+            style="height: 600px;"
+            (remove)="removeHandler($event)">
             <ng-template kendoSchedulerToolbarTemplate let-selectedDate="selectedDate" let-views="views">
 
                 <app-scheduler-navigation [selectedDate]="selectedDate">

@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
 // import { SchedulerEvent } from '@progress/kendo-angular-scheduler';
 // import { sampleData, displayDate } from './events-utc';
-import { ThfMenuItem, ThfPageAction, ThfButtonGroupItem } from '@totvs/thf-ui';
+import { ThfMenuItem, ThfPageAction, ThfButtonGroupItem, ThfDialogService } from '@totvs/thf-ui';
 import '@progress/kendo-date-math/tz/Brazil/East';
-import { ToolbarService, EditMode, SchedulerEvent } from '@progress/kendo-angular-scheduler';
+import { ToolbarService, EditMode, SchedulerEvent, RemoveEvent } from '@progress/kendo-angular-scheduler';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreateFormGroupArgs } from '@progress/kendo-angular-grid';
 
@@ -36,13 +36,14 @@ export class AppComponent {
     { label: 'Novo', action: this.add, icon: 'thf-icon-plus' }
   ];
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,
+    private dialog: ThfDialogService) {
     this.createFormGroup = this.createFormGroup.bind(this);
   }
 
   add() {
     this.events = [...this.events, {
-      id: 5,
+      id: this.getNextId(),
       title: 'Take the dog to the vet',
       description: '',
       startTimezone: null,
@@ -87,6 +88,10 @@ export class AppComponent {
     return (len === 0) ? 1 : this.events[this.events.length - 1].id + 1;
   }
 
-  //  public selectedDate: Date = displayDate;
-  //  public events: SchedulerEvent[] = sampleData;
+  removeHandler(removeEvent: RemoveEvent) {
+    removeEvent.preventDefault();
+    this.events = this.events.filter(event => {
+      return event.id !== removeEvent.event.id;
+    });
+  }
 }
