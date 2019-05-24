@@ -1,22 +1,21 @@
-import { NgModule, LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localePTPT from '@angular/common/locales/pt-PT';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 import { IntlModule } from '@progress/kendo-angular-intl';
+import '@progress/kendo-angular-intl/locales/pt-PT/all';
 import '@progress/kendo-angular-intl/locales/pt/all';
-import { SchedulerModule, ToolbarService } from '@progress/kendo-angular-scheduler';
+import { EditService, SchedulerModule } from '@progress/kendo-angular-scheduler';
 import { ThfKendoModule } from '@totvs/thf-kendo';
 import { ThfModule } from '@totvs/thf-ui';
 import 'hammerjs';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SchedulerNavigationComponent } from './scheduler-navigation/scheduler-navigation.component';
-import '@progress/kendo-angular-intl/locales/pt-PT/all';
-import localePTPT from '@angular/common/locales/pt-PT';
-import { registerLocaleData } from '@angular/common';
-
 
 
 
@@ -41,8 +40,8 @@ registerLocaleData(localePTPT);
     DateInputsModule,
   ],
   providers: [
-    ToolbarService, 
-    {provide: LOCALE_ID, useValue: 'pt-PT'}
+    EditService,
+    { provide: LOCALE_ID, useValue: 'pt-PT' }
   ],
   bootstrap: [AppComponent]
 })

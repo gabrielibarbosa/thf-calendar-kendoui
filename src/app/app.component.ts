@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-//import { SchedulerEvent } from '@progress/kendo-angular-scheduler';
-//import { sampleData, displayDate } from './events-utc';
+// import { SchedulerEvent } from '@progress/kendo-angular-scheduler';
+// import { sampleData, displayDate } from './events-utc';
 import { ThfMenuItem, ThfPageAction, ThfButtonGroupItem } from '@totvs/thf-ui';
 import '@progress/kendo-date-math/tz/Brazil/East';
 import { ToolbarService, EditMode, SchedulerEvent } from '@progress/kendo-angular-scheduler';
@@ -26,12 +26,6 @@ export class AppComponent {
     recurrenceRule: 'FREQ=DAILY;COUNT=5;'
   }];
 
-
-
-  action(button) {
-    alert(`${button.label}`);
-  }
-
   public selectedViewIndex = 2;
 
   readonly menus: Array<ThfMenuItem> = [
@@ -39,31 +33,45 @@ export class AppComponent {
   ];
 
   public readonly actions: Array<ThfPageAction> = [
-    { label: 'Novo' /*, action: this.add*/, icon: 'thf-icon-plus' }
+    { label: 'Novo', action: this.add, icon: 'thf-icon-plus' }
   ];
-
-  onClick($event) {
-    console.log($event);
-  }
 
   constructor(private formBuilder: FormBuilder) {
     this.createFormGroup = this.createFormGroup.bind(this);
+  }
+
+  add() {
+    this.events = [...this.events, {
+      id: 5,
+      title: 'Take the dog to the vet',
+      description: '',
+      startTimezone: null,
+      start: new Date(),
+      end: new Date(),
+      endTimezone: null,
+      recurrenceRule: null,
+      isAllDay: false
+    }];
+  }
+
+  onClick($event) {
+    console.log($event);
   }
 
   public createFormGroup(args: CreateFormGroupArgs): FormGroup {
     const dataItem = args.dataItem;
 
     this.formGroup = this.formBuilder.group({
-      'id': args.isNew ? this.getNextId() : dataItem.id,
-      'start': [dataItem.start, Validators.required],
-      'end': [dataItem.end, Validators.required],
-      'startTimezone': [dataItem.startTimezone],
-      'endTimezone': [dataItem.endTimezone],
-      'isAllDay': dataItem.isAllDay,
-      'title': dataItem.title,
-      'description': dataItem.description,
-      'recurrenceRule': dataItem.recurrenceRule,
-      'recurrenceId': dataItem.recurrenceId
+      id: args.isNew ? this.getNextId() : dataItem.id,
+      start: [dataItem.start, Validators.required],
+      end: [dataItem.end, Validators.required],
+      startTimezone: [dataItem.startTimezone],
+      endTimezone: [dataItem.endTimezone],
+      isAllDay: dataItem.isAllDay,
+      title: dataItem.title,
+      description: dataItem.description,
+      recurrenceRule: dataItem.recurrenceRule,
+      recurrenceId: dataItem.recurrenceId
     });
 
     return this.formGroup;
