@@ -47,6 +47,7 @@
             [editable]=true
             [(selectedViewIndex)]="selectedViewIndex" style="height: 600px;" 
             (remove)="removeHandler($event)"
+            (dragEnd)="dragEnd($event)"
             (eventDblClick)="eventDblClickHandler($event)">
 
             <ng-template kendoSchedulerToolbarTemplate let-selectedDate="selectedDate" let-views="views">

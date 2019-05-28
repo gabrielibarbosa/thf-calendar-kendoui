@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
-import { EditMode, Resource, CreateFormGroupArgs, RemoveEvent, SchedulerEvent } from '@progress/kendo-angular-scheduler';
+import { EditMode, Resource, CreateFormGroupArgs, RemoveEvent, SchedulerEvent, DragEndEvent } from '@progress/kendo-angular-scheduler';
 import { ThfModalComponent, ThfMenuItem, ThfPageAction, ThfModalAction, ThfCheckboxGroupOption } from '@totvs/thf-ui';
 import { RoomService } from '../room/room.service';
 
@@ -128,6 +128,17 @@ export class SchedulerComponent {
     });
   }
 
+  dragEnd(dragEvent: DragEndEvent){
+    dragEvent.event;
+    console.log(dragEvent.start);
+    this.events = this.events.map((event)=>{
+      if(dragEvent.event.id == event.id){
+        event.start =  dragEvent.start;
+        event.end = dragEvent.end;
+      }
+      return event;
+     })
+  }
   // eventDblClickHandler(eventClickEvent: EventClickEvent){
   //   // eventClickEvent.
   //   alert(9)
