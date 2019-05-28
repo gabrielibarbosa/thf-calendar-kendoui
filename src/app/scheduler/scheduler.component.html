@@ -48,7 +48,8 @@
             [(selectedViewIndex)]="selectedViewIndex" style="height: 600px;" 
             (remove)="removeHandler($event)"
             (dragEnd)="dragEnd($event)"
-            (eventDblClick)="eventDblClickHandler($event)">
+            (eventDblClick)="eventDblClickHandler($event)"
+            (resizeEnd)="resizeHandler($event)">
 
             <ng-template kendoSchedulerToolbarTemplate let-selectedDate="selectedDate" let-views="views">
                 <div class="thf-md-4">

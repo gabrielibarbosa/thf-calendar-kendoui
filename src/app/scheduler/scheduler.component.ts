@@ -1,33 +1,32 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
-import { EditMode, Resource, CreateFormGroupArgs, RemoveEvent, SchedulerEvent, DragEndEvent } from '@progress/kendo-angular-scheduler';
-import { ThfModalComponent, ThfMenuItem, ThfPageAction, ThfModalAction, ThfCheckboxGroupOption } from '@totvs/thf-ui';
-import { RoomService } from '../room/room.service';
+import { CreateFormGroupArgs, DragEndEvent, EventClickEvent, RemoveEvent } from '@progress/kendo-angular-scheduler';
+import { ThfCheckboxGroupOption, ThfModalAction, ThfModalComponent } from '@totvs/thf-ui';
 
 @Component({
   selector: 'app-scheduler',
   templateUrl: './scheduler.component.html',
   styleUrls: ['./scheduler.component.scss']
 })
-export class SchedulerComponent {  
+export class SchedulerComponent {
   @ViewChild(ThfModalComponent) thfModal: ThfModalComponent;
   @ViewChild('optionsForm') form: NgForm;
 
   @Input()
   public selectedDate: Date = new Date();
 
-  public selectedViewIndex = 2;
+  public selectedViewIndex = 1;
   public formGroup: FormGroup;
   public evento: any = {};
 
-  mask= "99:99";
+  mask = "99:99";
 
 
   constructor(private formBuilder: FormBuilder) {
     this.createFormGroup = this.createFormGroup.bind(this);
   }
 
- 
+
   public events: any = [
     {
       id: 1,
@@ -36,43 +35,12 @@ export class SchedulerComponent {
       end: new Date(),
       roomId: 1
     }
-  ];    
+  ];
 
   public readonly systemOptions: Array<ThfCheckboxGroupOption> = [
     { value: '1', label: 'Dia Inteiro' },
   ];
 
-  action(button) {
-    alert(`${button.label}`);
-  }
-
-  add(forms) {
-
-    let horarioInicio = new Date(forms.start);
-    horarioInicio.setHours(forms.horaInicial.substring(0,2),forms.horaInicial.substring(2,4),0,0);
-    console.log(horarioInicio);
-
-    let horarioFinal = new Date(forms.end)
-    horarioFinal.setHours(forms.horaFinal.substring(0,2),forms.horaFinal.substring(2,4),0,0);
-    console.log(horarioFinal);
-
-    this.events = [...this.events, {
-      id: this.getNextId(),
-      title: forms.titulo,
-      description: forms.descricao,
-      startTimezone: null,
-      start: horarioInicio,
-      end: horarioFinal,
-      endTimezone: null ,
-      recurrenceRule: null,
-      isAllDay: forms.diaInteiro,
-
-    }];
-  }
-
-  onClick($event) {
-    console.log($event);
-  }
   close: ThfModalAction = {
     action: () => {
       this.closeModal();
@@ -84,12 +52,44 @@ export class SchedulerComponent {
   confirm: ThfModalAction = {
     action: () => {
       console.log(this.evento);
-       this.add(this.evento);
-       this.form.reset();
-       this.thfModal.close();
+      this.add(this.evento);
+      this.form.reset();
+      this.thfModal.close();
     },
     label: 'Confirm'
   };
+
+  action(button) {
+    alert(`${button.label}`);
+  }
+
+  add(forms) {
+    const horarioInicio = new Date(forms.start);
+    horarioInicio.setHours(forms.horaInicial.substring(0, 2), forms.horaInicial.substring(2, 4), 0, 0);
+    console.log(horarioInicio);
+
+    const horarioFinal = new Date(forms.end)
+    horarioFinal.setHours(forms.horaFinal.substring(0, 2), forms.horaFinal.substring(2, 4), 0, 0);
+    console.log(horarioFinal);
+
+    this.events = [...this.events, {
+      id: this.getNextId(),
+      title: forms.titulo,
+      description: forms.descricao,
+      startTimezone: null,
+      start: horarioInicio,
+      end: horarioFinal,
+      endTimezone: null,
+      recurrenceRule: null,
+      isAllDay: forms.diaInteiro,
+
+    }];
+  }
+
+  onClick($event) {
+    console.log($event);
+  }
+
 
   closeModal() {
     this.form.reset();
@@ -128,20 +128,51 @@ export class SchedulerComponent {
     });
   }
 
-  dragEnd(dragEvent: DragEndEvent){
-    dragEvent.event;
+  dragEnd(dragEvent: DragEndEvent) {
     console.log(dragEvent.start);
-    this.events = this.events.map((event)=>{
-      if(dragEvent.event.id == event.id){
-        event.start =  dragEvent.start;
+    this.events = this.events.map((event) => {
+      if (dragEvent.event.id === event.id) {
+        event.start = dragEvent.start;
         event.end = dragEvent.end;
       }
       return event;
-     })
+    });
   }
-  // eventDblClickHandler(eventClickEvent: EventClickEvent){
-  //   // eventClickEvent.
-  //   alert(9)
-  // }
+  resizeHandler(resizeEndEvent: DragEndEvent) {
+    console.log(resizeEndEvent);
+    this.events = this.events.map(event => {
+      if (event.id === resizeEndEvent.event.id) {
+        event.start = resizeEndEvent.start;
+        event.end = resizeEndEvent.end;
+      }
+      return event;
+    });
+  }
+
+  eventDblClickHandler(eventClickEvent: EventClickEvent) {
+    this.evento.titulo = eventClickEvent.event.dataItem.title;
+    this.evento.descricao = eventClickEvent.event.dataItem.description;
+    this.evento.start = eventClickEvent.event.dataItem.start;
+    this.evento.end = eventClickEvent.event.dataItem.end;
+
+    this.evento.horaInicial = this.getHours(eventClickEvent.event.dataItem.start) + '' +
+      this.getMinute(eventClickEvent.event.dataItem.start);
+
+    this.evento.horaFinal = this.getHours(eventClickEvent.event.dataItem.end) + '' +
+      this.getMinute(eventClickEvent.event.dataItem.end);
+
+    this.thfModal.open();
+  }
+
+  private getHours(date) {
+    return date.getHours();
+  }
+
+  private getMinute(date) {
+    if (date.getMinutes() < 10) {
+      return '0' + date.getMinutes();
+    }
+    return date.getMinutes();
+  }
 
 }
