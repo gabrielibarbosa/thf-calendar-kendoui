@@ -1,0 +1,22 @@
+<thf-page-list t-title="Salas">
+    <form #roomsForm="ngForm">
+        <div class="thf-row">
+            <thf-input class="thf-md-12" name="roomName" t-label="Nome da sala" [(ngModel)]="room.text">
+            </thf-input>
+            <input class="color-picker" name="colorName" type="color"  [(ngModel)]="room.color" [style.background]="room.color" />
+            <div class="thf-md-12">    
+                <thf-button t-label="Salvar Sala" (t-click)="salvarSala()"></thf-button>
+            </div>
+        </div>
+    </form>
+
+    <thf-table 
+    t-hide-select-all="true"
+     t-hide-text-overflow t-sort="true" 
+     t-striped="true" 
+     [t-columns]="tableColumns" 
+     [t-items]="rooms"
+     [t-actions]="tableActions"
+     >
+  </thf-table>
+</thf-page-list>

@@ -44,6 +44,7 @@
     "@totvs/thf-theme-kendo": "^3.18.0",
     "@totvs/thf-ui": "^3.18.0",
     "hammerjs": "^2.0.8",
+    "ngx-color-picker": "^7.5.0",
     "rxjs": "6.3.3",
     "rxjs-compat": "^6.0.0"
   },

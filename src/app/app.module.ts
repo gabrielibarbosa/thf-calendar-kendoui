@@ -20,29 +20,25 @@ import '@progress/kendo-angular-intl/locales/pt/all';
 import { IntlModule } from '@progress/kendo-angular-intl';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
+import { RoomModule } from './room/room.module';
+import { SchedulerYmsModule } from './scheduler/schedulerYms.module';
 
 
 registerLocaleData(localePTPT);
 
 @NgModule({
   declarations: [
-    AppComponent,
-    SchedulerNavigationComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    SchedulerModule,
-    ThfModule,
-    ThfKendoModule,
-    IntlModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    HttpClientJsonpModule,
     RouterModule.forRoot([]),
-    DateInputsModule,
+    ThfModule,
+    SchedulerYmsModule,
+    RoomModule
+    
   ],
   providers: [
     ToolbarService,
