@@ -60,14 +60,23 @@ export class AppComponent {
   }
 
   add(forms) {
+
+    let horarioInicio = new Date(forms.start);
+    horarioInicio.setHours(forms.horaInicial.substring(0,2),forms.horaInicial.substring(2,4),0,0);
+    console.log(horarioInicio);
+
+    let horarioFinal = new Date(forms.end)
+    horarioFinal.setHours(forms.horaFinal.substring(0,2),forms.horaFinal.substring(2,4),0,0);
+    console.log(horarioFinal);
+
     this.events = [...this.events, {
       id: this.getNextId(),
       title: forms.titulo,
       description: forms.descricao,
-      startTimezone: forms.horaInicial,
-      start: new Date(forms.start),
-      end: new Date(forms.end),
-      endTimezone: forms.horaFinal,
+      startTimezone: null,
+      start: horarioInicio,
+      end: horarioFinal,
+      endTimezone: null ,
       recurrenceRule: null,
       isAllDay: forms.diaInteiro,
 
