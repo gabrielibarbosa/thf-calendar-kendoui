@@ -1,16 +1,16 @@
-import { Component, Input, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
-import { EditMode, RemoveEvent, SchedulerEvent, CreateFormGroupArgs, SlotClickEvent, EventClickEvent } from '@progress/kendo-angular-scheduler';
-import '@progress/kendo-date-math/tz/Brazil/East';
-import { ThfMenuItem, ThfPageAction, ThfModalComponent, ThfCheckboxGroupOption, ThfModalAction } from '@totvs/thf-ui';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { EditMode, Resource, CreateFormGroupArgs, RemoveEvent, SchedulerEvent } from '@progress/kendo-angular-scheduler';
+import { ThfModalComponent, ThfMenuItem, ThfPageAction, ThfModalAction, ThfCheckboxGroupOption } from '@totvs/thf-ui';
+import { RoomService } from '../room/room.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: 'app-scheduler',
+  templateUrl: './scheduler.component.html',
+  styleUrls: ['./scheduler.component.scss']
 })
+export class SchedulerComponent {
 
-export class AppComponent {
   title = 'thf-calendar-kendoui';
 
   public editedEvent: any;
@@ -26,14 +26,14 @@ export class AppComponent {
   public formGroup: FormGroup;
   public evento: any = {};
 
-  mask= "99:99";
+  mask = '99:99';
 
 
   constructor(private formBuilder: FormBuilder) {
     this.createFormGroup = this.createFormGroup.bind(this);
   }
 
- 
+
   public events: any = [
     {
       id: 1,
@@ -57,6 +57,24 @@ export class AppComponent {
     { value: '1', label: 'Dia Inteiro' },
   ];
 
+  close: ThfModalAction = {
+    action: () => {
+      this.closeModal();
+    },
+    label: 'Close',
+    danger: true
+  };
+
+  confirm: ThfModalAction = {
+    action: () => {
+      console.log(this.evento);
+      this.add(this.evento);
+      this.form.reset();
+      this.thfModal.close();
+    },
+    label: 'Confirm'
+  };
+
   action(button) {
     alert(`${button.label}`);
   }
@@ -79,23 +97,7 @@ export class AppComponent {
   onClick($event) {
     console.log($event);
   }
-  close: ThfModalAction = {
-    action: () => {
-      this.closeModal();
-    },
-    label: 'Close',
-    danger: true
-  };
 
-  confirm: ThfModalAction = {
-    action: () => {
-      console.log(this.evento);
-       this.add(this.evento);
-       this.form.reset();
-       this.thfModal.close();
-    },
-    label: 'Confirm'
-  };
 
   closeModal() {
     this.form.reset();
@@ -138,4 +140,5 @@ export class AppComponent {
   //   // eventClickEvent.
   //   alert(9)
   // }
+
 }
