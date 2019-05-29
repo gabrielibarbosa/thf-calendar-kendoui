@@ -16,11 +16,11 @@
     <thf-modal #modal t-title="Options" [t-primary-action]="confirm" [t-secondary-action]="close">
         <form #optionsForm="ngForm">
             <div class="thf-row">
-                <thf-input class="thf-md-12" name="titulo" t-label="Título" [(ngModel)]="evento.titulo">
+                <thf-input class="thf-md-12" name="titulo" t-label="Título" [(ngModel)]="evento.title">
                 </thf-input>
             </div>
             <div class="thf-row">
-                <thf-textarea class="thf-md-12" name="descricao" t-label="Descrição" [(ngModel)]="evento.descricao">
+                <thf-textarea class="thf-md-12" name="descricao" t-label="Descrição" [(ngModel)]="evento.description">
                 </thf-textarea>
             </div>
             <div class="thf-row">
@@ -33,16 +33,16 @@
 
                 </div>
                 <div class="thf-row">
-                    <thf-switch class="thf-md-6" name="diaInteiro" [(ngModel)]="evento.diaInteiro"
+                    <thf-switch class="thf-md-6" name="diaInteiro" [(ngModel)]="evento.allDay"
                         t-label-off="Dia inteiro" t-label-on="Dia inteiro" t-label="Dia inteiro">
                     </thf-switch>
                 </div>
                 <div class="thf-row">
-                    <thf-input [t-mask]="mask" class="thf-md-6" name="horaInicial" t-label="Hora Inicial"
-                        [(ngModel)]="evento.horaInicial">
+                    <thf-input [t-mask]="hourMask" class="thf-md-6" name="horaInicial" t-label="Hora Inicial"
+                        [(ngModel)]="evento.initialHour">
                     </thf-input>
-                    <thf-input [t-mask]="mask" class="thf-md-6" name="horaFinal" t-label="Horário Final"
-                        [(ngModel)]="evento.horaFinal">
+                    <thf-input [t-mask]="hourMask" class="thf-md-6" name="horaFinal" t-label="Horário Final"
+                        [(ngModel)]="evento.finalHour">
                     </thf-input>
                 </div>
 
