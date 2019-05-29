@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ToolbarService } from '@progress/kendo-angular-scheduler';
 
 @Component({

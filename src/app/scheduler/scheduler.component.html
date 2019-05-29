@@ -4,16 +4,13 @@
     <thf-button t-label="Novo" (t-click)="modal.open()">
     </thf-button>
     <div class="example-config">
-        <!-- <kendo-dropdownlist [data]="['horizontal', 'vertical']" [value]="group.orientation" [valuePrimitive]="true"
-                (valueChange)="onOrientationChange($event)">
-            </kendo-dropdownlist> -->
         <thf-select name="select" t-label="Orientação das salas" (t-change)="onOrientationChange($event)"
         [(ngModel)]="orientation"
             [t-options]="[{label: 'Horizontal', value: 'horizontal'}, {label: 'Vertical', value: 'vertical'}]">
         </thf-select>
-        <thf-select name="select" t-label="Edição" (t-change)="onEditableChange($event)"
-        [(ngModel)]="orientation"
-            [t-options]="[{label: 'Habilitado', value: 'true'}, {label: 'Desabilitado', value: 'false'}]">
+        <thf-select name="select" t-label="Edição"
+        [(ngModel)]="editable"
+            [t-options]="[{label: 'Habilitado', value: true}, {label: 'Desabilitado', value: false}]">
         </thf-select>
     </div>
     <thf-modal #modal t-title="Options" [t-primary-action]="confirm" [t-secondary-action]="close">
@@ -59,9 +56,17 @@
 
     </thf-modal>
 
-    <kendo-scheduler [kendoSchedulerBinding]="events" [selectedDate]="selectedDate" [editable]="editable" [group]="group"
-        [resources]="resources" [selectedViewIndex]="selectedViewIndex - 1" style="height: 600px;"
-        (remove)="removeHandler($event)" (dragEnd)="dragEnd($event)" (eventDblClick)="eventDblClickHandler($event)"
+    <kendo-scheduler 
+        style="height: 600px;"
+        [kendoSchedulerBinding]="events" 
+        [selectedDate]="selectedDate" 
+        [editable]="editable" 
+        [group]="group"
+        [resources]="resources"
+        [selectedViewIndex]="selectedViewIndex - 1"
+        (remove)="removeHandler($event)"
+        (dragEnd)="dragEnd($event)"
+        (eventDblClick)="eventDblClickHandler($event)"
         (resizeEnd)="resizeHandler($event)">
 
         <ng-template kendoSchedulerToolbarTemplate let-selectedDate="selectedDate" let-views="views">

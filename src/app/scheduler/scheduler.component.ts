@@ -1,7 +1,7 @@
-import { Component, Input, ViewChild, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
-import { CreateFormGroupArgs, DragEndEvent, EventClickEvent, RemoveEvent } from '@progress/kendo-angular-scheduler';
-import { ThfCheckboxGroupOption, ThfModalAction, ThfModalComponent } from '@totvs/thf-ui';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, NgForm } from '@angular/forms';
+import { DragEndEvent, EventClickEvent, Group, RemoveEvent, Resource } from '@progress/kendo-angular-scheduler';
+import { ThfModalAction, ThfModalComponent } from '@totvs/thf-ui';
 import { RoomService } from '../room/room.service';
 
 @Component({
@@ -19,7 +19,7 @@ export class SchedulerComponent implements OnInit {
   public formGroup: FormGroup;
   public evento: any = {};
   public rooms = [];
-  mask = '99:99';
+  public mask = '99:99';
 
   public events: any = [
     {
@@ -29,20 +29,16 @@ export class SchedulerComponent implements OnInit {
       end: new Date(),
       roomId: 1
     }
-  ];
+  ];  
 
-  public readonly systemOptions: Array<ThfCheckboxGroupOption> = [
-    { value: '1', label: 'Dia Inteiro' },
-  ];
-
-  close: ThfModalAction = {
+  public close: ThfModalAction = {
     action: () => {
       this.closeModal();
     },
     label: 'Cancelar'
   };
 
-  confirm: ThfModalAction = {
+  public confirm: ThfModalAction = {
     action: () => {
       console.log(this.evento);
       this.add(this.evento);
@@ -52,41 +48,31 @@ export class SchedulerComponent implements OnInit {
     label: 'Salvar'
   };
 
-  orientation = 'horizontal';
+  public orientation = 'horizontal';
 
-  public group: any = {
+  public group: Group = {
     resources: ['Rooms'],
     orientation: 'horizontal'
   };
 
-  public resources: any[] = [{
+  public resources: Array<Resource> = [{
     name: 'Rooms',
     data: [],
     field: 'roomId',
     valueField: 'value',
     textField: 'text',
     colorField: 'color'
+
   }];
-  editable: any;
+  
+  editable: boolean = true;
 
 
-  constructor(private formBuilder: FormBuilder, private roomService: RoomService) {
-    this.createFormGroup = this.createFormGroup.bind(this);
+  constructor(private roomService: RoomService) {
   }
 
   public onOrientationChange(value: any): void {
     this.group = { ...this.group, orientation: value };
-  }
-
-  public onEditableChange(value){
-    console.log(value);
-    if(value == "true"){
-      console.log("if"+value);
-      this.editable = true;
-    }else{
-      console.log("else"+value);
-      this.editable =  false;
-    }
   }
 
   ngOnInit(): void {
@@ -130,9 +116,7 @@ export class SchedulerComponent implements OnInit {
         }
         return event;
       });  
-    } else {
-      
-
+    } else {      
       this.events = [...this.events, {
         id: this.getNextId(),
         title: forms.titulo,
@@ -157,25 +141,6 @@ export class SchedulerComponent implements OnInit {
     this.thfModal.close();
   }
 
-  public createFormGroup(args: CreateFormGroupArgs): FormGroup {
-    const dataItem = args.dataItem;
-
-    this.formGroup = this.formBuilder.group({
-      id: args.isNew ? this.getNextId() : dataItem.id,
-      start: [dataItem.start, Validators.required],
-      end: [dataItem.end, Validators.required],
-      startTimezone: [dataItem.startTimezone],
-      endTimezone: [dataItem.endTimezone],
-      isAllDay: dataItem.isAllDay,
-      title: dataItem.title,
-      description: dataItem.description,
-      recurrenceRule: dataItem.recurrenceRule,
-      recurrenceId: dataItem.recurrenceId
-    });
-
-    return this.formGroup;
-  }
-
   public getNextId(): number {
     const len = this.events.length;
 
@@ -183,7 +148,6 @@ export class SchedulerComponent implements OnInit {
   }
 
   removeHandler(removeEvent: RemoveEvent) {
-    removeEvent.preventDefault();
     this.events = this.events.filter(event => {
       return event.id !== removeEvent.event.id;
     });

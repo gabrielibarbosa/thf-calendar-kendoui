@@ -1,8 +1,5 @@
-import { Component, Input, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
-import { EditMode, RemoveEvent, SchedulerEvent, CreateFormGroupArgs, SlotClickEvent, EventClickEvent } from '@progress/kendo-angular-scheduler';
-import '@progress/kendo-date-math/tz/Brazil/East';
-import { ThfMenuItem, ThfPageAction, ThfModalComponent, ThfCheckboxGroupOption, ThfModalAction } from '@totvs/thf-ui';
+import { Component } from '@angular/core';
+import { ThfMenuItem } from '@totvs/thf-ui';
 
 @Component({
   selector: 'app-root',

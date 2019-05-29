@@ -1,10 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
-import { NgModule, LOCALE_ID } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { IntlModule } from '@progress/kendo-angular-intl';
-import { EditService, SchedulerModule, ToolbarService } from '@progress/kendo-angular-scheduler';
+import { SchedulerModule } from '@progress/kendo-angular-scheduler';
 import { ThfKendoModule } from '@totvs/thf-kendo';
 import { ThfModule } from '@totvs/thf-ui';
 import { RoomService } from '../room/room.service';
@@ -20,17 +18,9 @@ import { SchedulerComponent } from './scheduler.component';
     ThfModule,
     ThfKendoModule,
     IntlModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    HttpClientJsonpModule,
-    DateInputsModule
   ],
   providers: [
     RoomService,
-    ToolbarService,
-    EditService,
-    {provide: LOCALE_ID, useValue: 'pt-PT'}
-
   ]
 })
 export class SchedulerYmsModule { }
