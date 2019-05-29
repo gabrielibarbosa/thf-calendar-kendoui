@@ -1,8 +1,11 @@
 <thf-page-default t-title="Painel de Agendamento">
 
           <!-- Modal para adicionar um novo evento -->
-          <thf-button t-label="Novo" (t-click)="modal.open()">
-        </thf-button>
+          <div class="thf-row">
+            <thf-button class="thf-md-4" t-label="Novo" (t-click)="modal.open()">
+            </thf-button>
+          </div>
+         
         <thf-modal #modal t-title="Options" [t-primary-action]="confirm" [t-secondary-action]="close">
             <form #optionsForm="ngForm">
                 <div class="thf-row">
@@ -42,7 +45,8 @@
             </form>
 
         </thf-modal>
-
+        <br>
+        <div class="thf-row">
         <kendo-scheduler [kendoSchedulerBinding]="events" [selectedDate]="selectedDate"
             [editable]=true
             [(selectedViewIndex)]="selectedViewIndex" style="height: 600px;" 
@@ -68,4 +72,6 @@
             <kendo-scheduler-month-view [eventHeight]="30">
             </kendo-scheduler-month-view>
         </kendo-scheduler>
+    </div>
+
 </thf-page-default>
