@@ -190,16 +190,16 @@ export class SchedulerComponent implements OnInit {
   }
 
   dragEnd(dragEvent: DragEndEvent) {
-    console.log(dragEvent.start);
     this.events = this.events.map((event) => {
       if (dragEvent.event.id === event.id) {
         event.start = dragEvent.start;
         event.end = dragEvent.end;
-        event.roomId =  dragEvent.dataItem.roomId;
+        event.roomId = dragEvent.resources.roomId;
       }
       return event;
     });
   }
+  
   resizeHandler(resizeEndEvent: DragEndEvent) {
     console.log(resizeEndEvent);
     this.events = this.events.map(event => {

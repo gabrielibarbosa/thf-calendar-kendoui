@@ -11,7 +11,7 @@ export class RoomService {
   constructor(private http: HttpClient) { }
 
   getRooms() {
-    return of(RoomService.rooms);// this.http.get(`${environment.apiUri}/rooms`);
+    return of(RoomService.rooms);
   }
 
   saveRoom(room) {
