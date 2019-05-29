@@ -47,8 +47,10 @@ export class SchedulerComponent {
   }
 
   add(forms) {
-
+    console.log("Data Inicial"+forms.start)
     let horarioInicio = new Date(forms.start);
+    console.log(horarioInicio);
+    console.log(horarioInicio.toISOString());
     horarioInicio.setHours(forms.horaInicial.substring(0,2),forms.horaInicial.substring(2,4),0,0);
     console.log(horarioInicio);
 
@@ -60,10 +62,8 @@ export class SchedulerComponent {
       id: this.getNextId(),
       title: forms.titulo,
       description: forms.descricao,
-      startTimezone: null,
       start: horarioInicio,
       end: horarioFinal,
-      endTimezone: null ,
       recurrenceRule: null,
       isAllDay: forms.diaInteiro,
 
@@ -139,9 +139,4 @@ export class SchedulerComponent {
       return event;
      })
   }
-  // eventDblClickHandler(eventClickEvent: EventClickEvent){
-  //   // eventClickEvent.
-  //   alert(9)
-  // }
-
 }
