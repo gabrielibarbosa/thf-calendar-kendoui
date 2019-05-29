@@ -78,8 +78,15 @@ export class SchedulerComponent implements OnInit {
     this.group = { ...this.group, orientation: value };
   }
 
-  public onEditableChange(value:any){
-    this.editable = value;
+  public onEditableChange(value){
+    console.log(value);
+    if(value == "true"){
+      console.log("if"+value);
+      this.editable = true;
+    }else{
+      console.log("else"+value);
+      this.editable =  false;
+    }
   }
 
   ngOnInit(): void {
