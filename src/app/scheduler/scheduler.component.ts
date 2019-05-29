@@ -67,6 +67,7 @@ export class SchedulerComponent implements OnInit {
     textField: 'text',
     colorField: 'color'
   }];
+  editable: any;
 
 
   constructor(private formBuilder: FormBuilder, private roomService: RoomService) {
@@ -77,7 +78,15 @@ export class SchedulerComponent implements OnInit {
     this.group = { ...this.group, orientation: value };
   }
 
+  public onEditableChange(value:any){
+    this.editable = value;
+  }
+
   ngOnInit(): void {
+   this.resourcesEvent();
+  }
+
+  resourcesEvent(){
     this.roomService.getRooms().subscribe((rooms: any) => {
       this.rooms = rooms;
       this.rooms = rooms.map(room => {
@@ -96,23 +105,39 @@ export class SchedulerComponent implements OnInit {
   }
 
   add(forms) {
-    console.log(forms.start);
     const horarioInicio = this.dateWithoutTimezone(forms.start);
     horarioInicio.setHours(forms.horaInicial.substring(0, 2), forms.horaInicial.substring(2, 4), 0, 0);
 
     const horarioFinal = this.dateWithoutTimezone(forms.end);
     horarioFinal.setHours(forms.horaFinal.substring(0, 2), forms.horaFinal.substring(2, 4), 0, 0);
 
-    this.events = [...this.events, {
-      id: this.getNextId(),
-      title: forms.titulo,
-      description: forms.descricao,
-      start: horarioInicio,
-      end: horarioFinal,
-      recurrenceRule: null,
-      isAllDay: forms.diaInteiro,
-      roomId: forms.roomId
-    }];
+    if(this.evento.id) {
+      this.events = this.events.map(event => {
+        if(this.evento.id === event.id) {
+            event.title = forms.titulo;
+            event.description = forms.descricao;
+            event.start = horarioInicio;
+            event.end = horarioFinal;         
+            event.isAllDay = forms.diaInteiro;
+            event.roomId = forms.roomId;                
+        }
+        return event;
+      });  
+    } else {
+      
+
+      this.events = [...this.events, {
+        id: this.getNextId(),
+        title: forms.titulo,
+        description: forms.descricao,
+        start: horarioInicio,
+        end: horarioFinal,
+        recurrenceRule: null,
+        isAllDay: forms.diaInteiro,
+        roomId: forms.roomId
+        }];
+    }
+    
   }
 
   onClick($event) {
@@ -163,6 +188,7 @@ export class SchedulerComponent implements OnInit {
       if (dragEvent.event.id === event.id) {
         event.start = dragEvent.start;
         event.end = dragEvent.end;
+        event.roomId =  dragEvent.dataItem.roomId;
       }
       return event;
     });
@@ -173,16 +199,20 @@ export class SchedulerComponent implements OnInit {
       if (event.id === resizeEndEvent.event.id) {
         event.start = resizeEndEvent.start;
         event.end = resizeEndEvent.end;
+        event.roomId =  resizeEndEvent.dataItem.roomId;
+
       }
       return event;
     });
   }
 
   eventDblClickHandler(eventClickEvent: EventClickEvent) {
+    this.evento.id = eventClickEvent.event.dataItem.id;
     this.evento.titulo = eventClickEvent.event.dataItem.title;
     this.evento.descricao = eventClickEvent.event.dataItem.description;
     this.evento.start = eventClickEvent.event.dataItem.start;
     this.evento.end = eventClickEvent.event.dataItem.end;
+    this.evento.roomId = eventClickEvent.event.dataItem.roomId;
 
     this.evento.horaInicial = this.getHours(eventClickEvent.event.dataItem.start) + '' +
       this.getMinute(eventClickEvent.event.dataItem.start);

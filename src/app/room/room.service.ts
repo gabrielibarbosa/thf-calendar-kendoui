@@ -7,7 +7,7 @@ import { of } from 'rxjs';
   providedIn: 'root'
 })
 export class RoomService {
-  static rooms = [];
+  static rooms = [ { "text": "sala 1", "color": "#ff0080", "value": 1 }, { "text": "sala 2", "color": "#0080c0", "value": 2 } ];
   constructor(private http: HttpClient) { }
 
   getRooms() {
