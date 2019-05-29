@@ -1,27 +1,49 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment.prod';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomService {
-
+  static rooms = [];
   constructor(private http: HttpClient) { }
 
   getRooms() {
-    return this.http.get(`${environment.apiUri}/rooms`);
+    return of(RoomService.rooms);// this.http.get(`${environment.apiUri}/rooms`);
   }
 
   saveRoom(room) {
-    return this.http.post(`${environment.apiUri}/rooms`, room);
+    if (room.value) {
+      RoomService.rooms = RoomService.rooms.map(filterRoom => {
+        if (filterRoom.value === room.value) {
+          filterRoom = room;
+        }
+        return filterRoom;
+      });
+    } else {
+      RoomService.rooms.push({
+        text: room.text,
+        color: room.color,
+        value: RoomService.rooms.length + 1
+      });
+    }
+
+    return of(RoomService.rooms);
   }
 
   updateRoom(room) {
-    return this.http.put(`${environment.apiUri}/rooms`, room);
+    return this.saveRoom(room);
   }
 
-  deleteRoom(id) {
-    return this.http.delete(`${environment.apiUri}/rooms/${id}`);
+  deleteRoom(value) {
+    RoomService.rooms = RoomService.rooms.filter(room => {
+      if (room.value !== value) {
+        return room;
+      }
+    });
+
+    return of(RoomService.rooms);
   }
 }

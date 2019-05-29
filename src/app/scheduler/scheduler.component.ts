@@ -1,31 +1,25 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { CreateFormGroupArgs, DragEndEvent, EventClickEvent, RemoveEvent } from '@progress/kendo-angular-scheduler';
 import { ThfCheckboxGroupOption, ThfModalAction, ThfModalComponent } from '@totvs/thf-ui';
+import { RoomService } from '../room/room.service';
 
 @Component({
   selector: 'app-scheduler',
   templateUrl: './scheduler.component.html',
   styleUrls: ['./scheduler.component.scss']
 })
-export class SchedulerComponent {
+export class SchedulerComponent implements OnInit {
   @ViewChild(ThfModalComponent) thfModal: ThfModalComponent;
   @ViewChild('optionsForm') form: NgForm;
 
-  @Input()
   public selectedDate: Date = new Date();
 
   public selectedViewIndex = 1;
   public formGroup: FormGroup;
   public evento: any = {};
-
-  mask = "99:99";
-
-
-  constructor(private formBuilder: FormBuilder) {
-    this.createFormGroup = this.createFormGroup.bind(this);
-  }
-
+  public rooms = [];
+  mask = '99:99';
 
   public events: any = [
     {
@@ -45,8 +39,7 @@ export class SchedulerComponent {
     action: () => {
       this.closeModal();
     },
-    label: 'Close',
-    danger: true
+    label: 'Cancelar'
   };
 
   confirm: ThfModalAction = {
@@ -56,21 +49,59 @@ export class SchedulerComponent {
       this.form.reset();
       this.thfModal.close();
     },
-    label: 'Confirm'
+    label: 'Salvar'
   };
+
+  orientation = 'horizontal';
+
+  public group: any = {
+    resources: ['Rooms'],
+    orientation: 'horizontal'
+  };
+
+  public resources: any[] = [{
+    name: 'Rooms',
+    data: [],
+    field: 'roomId',
+    valueField: 'value',
+    textField: 'text',
+    colorField: 'color'
+  }];
+
+
+  constructor(private formBuilder: FormBuilder, private roomService: RoomService) {
+    this.createFormGroup = this.createFormGroup.bind(this);
+  }
+
+  public onOrientationChange(value: any): void {
+    this.group = { ...this.group, orientation: value };
+  }
+
+  ngOnInit(): void {
+    this.roomService.getRooms().subscribe((rooms: any) => {
+      this.rooms = rooms;
+      this.rooms = rooms.map(room => {
+        return { value: room.value, label: room.text };
+      });
+      const resources = this.resources.map(resource => {
+        resource.data = rooms;
+        return resource;
+      });
+      this.resources = resources;
+    });
+  }
 
   action(button) {
     alert(`${button.label}`);
   }
 
   add(forms) {
-    const horarioInicio = new Date(forms.start);
+    console.log(forms.start);
+    const horarioInicio = this.dateWithoutTimezone(forms.start);
     horarioInicio.setHours(forms.horaInicial.substring(0, 2), forms.horaInicial.substring(2, 4), 0, 0);
-    console.log(horarioInicio);
 
-    const horarioFinal = new Date(forms.end)
+    const horarioFinal = this.dateWithoutTimezone(forms.end);
     horarioFinal.setHours(forms.horaFinal.substring(0, 2), forms.horaFinal.substring(2, 4), 0, 0);
-    console.log(horarioFinal);
 
     this.events = [...this.events, {
       id: this.getNextId(),
@@ -82,7 +113,7 @@ export class SchedulerComponent {
       endTimezone: null,
       recurrenceRule: null,
       isAllDay: forms.diaInteiro,
-
+      roomId: forms.roomId
     }];
   }
 
@@ -173,6 +204,25 @@ export class SchedulerComponent {
       return '0' + date.getMinutes();
     }
     return date.getMinutes();
+  }
+
+  openModal() {
+    this.thfModal.open();
+  }
+
+  onSchedulerViewChange(event) {
+    if (event !== 1) {
+      this.group = undefined;
+    } else {
+      this.group = {
+        resources: ['Rooms'],
+        orientation: 'horizontal'
+      };
+    }
+  }
+
+  private dateWithoutTimezone(date) {
+    return new Date(date.substr(0, 10).replace(/-/g, '/'));
   }
 
 }

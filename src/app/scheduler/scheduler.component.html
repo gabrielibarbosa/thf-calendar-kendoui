@@ -1,71 +1,81 @@
 <thf-page-default t-title="Painel de Agendamento">
 
-          <!-- Modal para adicionar um novo evento -->
-          <thf-button t-label="Novo" (t-click)="modal.open()">
-        </thf-button>
-        <thf-modal #modal t-title="Options" [t-primary-action]="confirm" [t-secondary-action]="close">
-            <form #optionsForm="ngForm">
+    <!-- Modal para adicionar um novo evento -->
+    <thf-button t-label="Novo" (t-click)="modal.open()">
+    </thf-button>
+    <div class="example-config">
+        <!-- <kendo-dropdownlist [data]="['horizontal', 'vertical']" [value]="group.orientation" [valuePrimitive]="true"
+                (valueChange)="onOrientationChange($event)">
+            </kendo-dropdownlist> -->
+        <thf-select name="select" t-label="Orientação das salas" (t-change)="onOrientationChange($event)"
+        [(ngModel)]="orientation"
+            [t-options]="[{label: 'Horizontal', value: 'horizontal'}, {label: 'Vertical', value: 'vertical'}]">
+        </thf-select>
+    </div>
+    <thf-modal #modal t-title="Options" [t-primary-action]="confirm" [t-secondary-action]="close">
+        <form #optionsForm="ngForm">
+            <div class="thf-row">
+                <thf-input class="thf-md-12" name="titulo" t-label="Título" [(ngModel)]="evento.titulo">
+                </thf-input>
+            </div>
+            <div class="thf-row">
+                <thf-textarea class="thf-md-12" name="descricao" t-label="Descrição" [(ngModel)]="evento.descricao">
+                </thf-textarea>
+            </div>
+            <div class="thf-row">
+
                 <div class="thf-row">
-                    <thf-input class="thf-md-12" name="titulo" t-label="Título" [(ngModel)]="evento.titulo">
+                    <thf-datepicker class="thf-md-6" name="start" t-label="Início" t-format="dd/mm/yyyy" [(ngModel)]="evento.start">
+                    </thf-datepicker>
+                    <thf-datepicker class="thf-md-6" name="end" t-label="Fim" [(ngModel)]="evento.end">
+                    </thf-datepicker>
+
+                </div>
+                <div class="thf-row">
+                    <thf-switch class="thf-md-6" name="diaInteiro" [(ngModel)]="evento.diaInteiro"
+                        t-label-off="Dia inteiro" t-label-on="Dia inteiro" t-label="Dia inteiro">
+                    </thf-switch>
+                </div>
+                <div class="thf-row">
+                    <thf-input [t-mask]="mask" class="thf-md-6" name="horaInicial" t-label="Hora Inicial"
+                        [(ngModel)]="evento.horaInicial">
+                    </thf-input>
+                    <thf-input [t-mask]="mask" class="thf-md-6" name="horaFinal" t-label="Horário Final"
+                        [(ngModel)]="evento.horaFinal">
                     </thf-input>
                 </div>
-                <div class="thf-row">
-                    <thf-textarea class="thf-md-12" name="descricao" t-label="Descrição" [(ngModel)]="evento.descricao">
-                    </thf-textarea>
+
+                <div *ngIf="diaInteiro == false">
+                    <p>dia inteiro </p>
                 </div>
-                <div class="thf-row">
-
-                    <div class="thf-row">
-                        <thf-datepicker class="thf-md-6" name="start" t-label="Início" [(ngModel)]="evento.start">
-                        </thf-datepicker>
-                        <thf-datepicker class="thf-md-6" name="end" t-label="Fim" [(ngModel)]="evento.end">
-                        </thf-datepicker>
-                       
-                    </div>
-                    <div class="thf-row">
-                        <thf-switch class="thf-md-6" name="diaInteiro" [(ngModel)]="evento.diaInteiro"
-                            t-label-off="Dia inteiro" t-label-on="Dia inteiro" t-label="Dia inteiro">
-                        </thf-switch>
-                    </div>
-                    <div class="thf-row">
-                        <thf-input [t-mask]="mask" class="thf-md-6" name="horaInicial" t-label="Hora Inicial"
-                            [(ngModel)]="evento.horaInicial">
-                        </thf-input>
-                        <thf-input [t-mask]="mask" class="thf-md-6" name="horaFinal" t-label="Horário Final" [(ngModel)]="evento.horaFinal">
-                        </thf-input>
-                    </div>
-
-                    <div *ngIf="diaInteiro == false">
-                        <p>dia inteiro </p>
-                    </div>
-                </div>
-            </form>
-
-        </thf-modal>
-
-        <kendo-scheduler [kendoSchedulerBinding]="events" [selectedDate]="selectedDate"
-            [editable]=true
-            [(selectedViewIndex)]="selectedViewIndex" style="height: 600px;" 
-            (remove)="removeHandler($event)"
-            (dragEnd)="dragEnd($event)"
-            (eventDblClick)="eventDblClickHandler($event)"
-            (resizeEnd)="resizeHandler($event)">
-
-            <ng-template kendoSchedulerToolbarTemplate let-selectedDate="selectedDate" let-views="views">
-                <div class="thf-md-4">
-                    <app-scheduler-navigation [selectedDate]="selectedDate">
-                    </app-scheduler-navigation>
-                </div>
-                <thf-select name="select" class="thf-md-3" [(ngModel)]="selectedViewIndex"
-                    [t-options]="[{label: 'Dia', value: '0'}, {label: 'Semana', value: '1'}, {label: 'Mês', value: '2'} ]">
+                <thf-select class="thf-md-6" name="roomId" [(ngModel)]="evento.roomId" t-label="Sala" [t-options]="rooms">
                 </thf-select>
-            </ng-template>
+            </div>
+        </form>
 
-            <kendo-scheduler-day-view>
-            </kendo-scheduler-day-view>
-            <kendo-scheduler-week-view>
-            </kendo-scheduler-week-view>
-            <kendo-scheduler-month-view [eventHeight]="30">
-            </kendo-scheduler-month-view>
-        </kendo-scheduler>
+    </thf-modal>
+
+    <kendo-scheduler [kendoSchedulerBinding]="events" [selectedDate]="selectedDate" [editable]=true [group]="group"
+        [resources]="resources" [selectedViewIndex]="selectedViewIndex - 1" style="height: 600px;"
+        (remove)="removeHandler($event)" (dragEnd)="dragEnd($event)" (eventDblClick)="eventDblClickHandler($event)"
+        (resizeEnd)="resizeHandler($event)">
+
+        <ng-template kendoSchedulerToolbarTemplate let-selectedDate="selectedDate" let-views="views">
+            <div class="thf-md-4">
+                <app-scheduler-navigation [selectedDate]="selectedDate">
+                </app-scheduler-navigation>
+            </div>
+            <thf-select name="select" class="thf-md-3 selected-view" [(ngModel)]="selectedViewIndex"
+                (t-change)="onSchedulerViewChange($event)"
+                [t-options]="[{label: 'Dia', value: 1}, {label: 'Semana', value: 2}, {label: 'Mês', value: 3} ]">
+            </thf-select>
+        </ng-template>
+
+        <kendo-scheduler-day-view>
+        </kendo-scheduler-day-view>
+        <kendo-scheduler-week-view>
+        </kendo-scheduler-week-view>
+        <kendo-scheduler-month-view [eventHeight]="30">
+        </kendo-scheduler-month-view>
+    </kendo-scheduler>
 </thf-page-default>
