@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 import { IntlModule } from '@progress/kendo-angular-intl';
@@ -29,6 +29,8 @@ import { SchedulerComponent } from './scheduler.component';
     RoomService,
     ToolbarService,
     EditService,
+    {provide: LOCALE_ID, useValue: 'pt-PT'}
+
   ]
 })
 export class SchedulerYmsModule { }

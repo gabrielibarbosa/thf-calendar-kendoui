@@ -107,10 +107,8 @@ export class SchedulerComponent implements OnInit {
       id: this.getNextId(),
       title: forms.titulo,
       description: forms.descricao,
-      startTimezone: null,
       start: horarioInicio,
       end: horarioFinal,
-      endTimezone: null,
       recurrenceRule: null,
       isAllDay: forms.diaInteiro,
       roomId: forms.roomId
